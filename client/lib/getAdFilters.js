@@ -6,7 +6,7 @@ function getAdFilters () {
     const xhr = new XMLHttpRequest()
 
     xhr.open('GET', '/ads')
-    xhr.onload = function () {
+    xhr.onload = () => {
       if (xhr.status === 200) resolve(JSON.parse(xhr.response))
       else {
         reject()

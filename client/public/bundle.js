@@ -260,6 +260,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	// use ad filters to detect ads and store them
 	function parseAds(images, videos, adObj, filters) {
 	  adObj = (0, _parseImageAds2.default)(images, adObj, filters);
 	  adObj = (0, _parseVideoAds2.default)(videos, adObj, filters);
