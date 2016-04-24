@@ -18,9 +18,9 @@ Download the index.js file and add the following code to your HTML:
 ```
 
 ### Ad Detection Method
-The API uses EasyList(https://easylist.adblockplus.org/en/), the filtering subscription that powers
+The API uses [EasyList](https://easylist.adblockplus.org/en/), the filtering subscription that powers
 AdBlock, to parse media on the page and filter out those that are not ads. The API also uses
-ip-api(http://ip-api.com/) to gather geolocation data from your visitors.
+[ip-api](http://ip-api.com/) to gather geolocation data from your visitors.
 
 These were shortcuts chosen due to the rapid nature of development. In production, this API would
 seek to handle these features internally to allow for better customization and prevent a reliance
