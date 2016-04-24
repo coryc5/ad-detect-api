@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/insertAdObj.js",
+    "start": "node server/server.js",
+    "example": "node example/server/server.js"
   },
   "author": "",
   "license": "ISC",
