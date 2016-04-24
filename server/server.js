@@ -1,26 +1,15 @@
 const path = require('path')
+const cors = require('cors')
 const express = require('express')
 const bodyParser = require('body-parser')
+const insertAdObj = require('./insertAdObj')
 
 const app = express()
 
-const publicPath = path.join(__dirname, '../client/public')
-
 app.use(bodyParser.json())
+app.use(cors())
 
-app.get('/', (req, res) => res.sendFile(path.join(publicPath, 'main.html')))
-app.get('/iframe.html', (req, res) => res.sendFile(path.join(publicPath, 'iframe.html')))
-app.get('/bundle.js', (req, res) => res.sendFile(path.join(publicPath, 'bundle.js')))
-app.get('/ads.json', (req, res) => res.sendFile(path.join(__dirname, 'utils/ads.json')))
-app.get('/images/:img', (req, res) => {
-  res.sendFile(path.join(publicPath, 'images', req.params.img))
-})
-app.get('/videos/:vid', (req, res) => {
-  res.sendFile(path.join(publicPath, 'videos', req.params.vid))
-})
+app.get('/adfilters', (req, res) => res.sendFile(path.join(__dirname, 'utils/ads.json')))
+app.post('/database', (req, res) => insertAdObj(req.body))
 
-app.post('/database', (req, res) => {
-  console.log(req.body)
-})
-
-app.listen(5000)
+app.listen(5000, () => console.log('Listening on port 5000...'))

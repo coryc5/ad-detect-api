@@ -1,12 +1,12 @@
 /* globals describe, beforeEach, afterEach, it, chai, sinon */
 
-import getAdFilters from '../client/lib/getAdFilters'
-import parseAds from '../client/lib/parseAds'
-import parseImageAds from '../client/lib/parseImageAds'
-import parseVideoAds from '../client/lib/parseImageAds'
-import getUserInfo from '../client/lib/getUserInfo'
-import addUserInfo from '../client/lib/addUserInfo'
-import postAdObj from '../client/lib/postAdObj'
+import getAdFilters from '../src/getAdFilters'
+import parseAds from '../src/parseAds'
+import parseImageAds from '../src/parseImageAds'
+import parseVideoAds from '../src/parseVideoAds'
+import getUserInfo from '../src/getUserInfo'
+import addUserInfo from '../src/addUserInfo'
+import postAdObj from '../src/postAdObj'
 
 const assert = chai.assert
 
@@ -63,22 +63,32 @@ describe('parseAds', () => {
 })
 
 describe('parseImageAds', () => {
-  const results = parseImageAds([], {}, [])
+  const results = parseImageAds([{ src: 'a.jpg' }, { src: 'netflix-ad-home.jpg' }],
+    { images: [] }, ['-ad-home.'])
 
   it('should return an object', () => assert.equal(results.constructor, Object))
 
   it('object should have same number of properties upon exit as entry', () => {
-    assert.equal(Object.keys(results).length, 0)
+    assert.equal(Object.keys(results).length, 1)
+  })
+
+  it('should ignore images not containing filters', () => {
+    assert.equal(results.images.every((image) => image.src.includes('-ad-home.')), true)
   })
 })
 
 describe('parseVideoAds', () => {
-  const results = parseVideoAds([], {}, [])
+  const results = parseVideoAds([{ src: 'a.mp4' }, { src: 'netflix-ad-home.mp4' }],
+    { videos: [] }, ['-ad-home.'])
 
   it('should return an object', () => assert.equal(results.constructor, Object))
 
   it('object should have same number of properties upon exit as entry', () => {
-    assert.equal(Object.keys(results).length, 0)
+    assert.equal(Object.keys(results).length, 1)
+  })
+
+  it('should ignore videos not containing filters', () => {
+    assert.equal(results.videos.every((video) => video.src.includes('-ad-home.')), true)
   })
 })
 

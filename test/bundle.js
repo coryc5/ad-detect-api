@@ -58,6 +58,10 @@
 
 	var _parseImageAds2 = _interopRequireDefault(_parseImageAds);
 
+	var _parseVideoAds = __webpack_require__(4);
+
+	var _parseVideoAds2 = _interopRequireDefault(_parseVideoAds);
+
 	var _getUserInfo = __webpack_require__(5);
 
 	var _getUserInfo2 = _interopRequireDefault(_getUserInfo);
@@ -130,26 +134,38 @@
 	});
 
 	describe('parseImageAds', function () {
-	  var results = (0, _parseImageAds2.default)([], {}, []);
+	  var results = (0, _parseImageAds2.default)([{ src: 'a.jpg' }, { src: 'netflix-ad-home.jpg' }], { images: [] }, ['-ad-home.']);
 
 	  it('should return an object', function () {
 	    return assert.equal(results.constructor, Object);
 	  });
 
 	  it('object should have same number of properties upon exit as entry', function () {
-	    assert.equal(Object.keys(results).length, 0);
+	    assert.equal(Object.keys(results).length, 1);
+	  });
+
+	  it('should ignore images not containing filters', function () {
+	    assert.equal(results.images.every(function (image) {
+	      return image.src.includes('-ad-home.');
+	    }), true);
 	  });
 	});
 
 	describe('parseVideoAds', function () {
-	  var results = (0, _parseImageAds2.default)([], {}, []);
+	  var results = (0, _parseVideoAds2.default)([{ src: 'a.mp4' }, { src: 'netflix-ad-home.mp4' }], { videos: [] }, ['-ad-home.']);
 
 	  it('should return an object', function () {
 	    return assert.equal(results.constructor, Object);
 	  });
 
 	  it('object should have same number of properties upon exit as entry', function () {
-	    assert.equal(Object.keys(results).length, 0);
+	    assert.equal(Object.keys(results).length, 1);
+	  });
+
+	  it('should ignore videos not containing filters', function () {
+	    assert.equal(results.videos.every(function (video) {
+	      return video.src.includes('-ad-home.');
+	    }), true);
 	  });
 	});
 
@@ -265,9 +281,9 @@
 	  return new Promise(function (resolve, reject) {
 	    var xhr = new XMLHttpRequest();
 
-	    xhr.open('GET', '/ads');
+	    xhr.open('GET', 'http://localhost:5000/adfilters');
 	    xhr.onload = function () {
-	      if (xhr.status === 200) resolve(JSON.parse(xhr.response));else if (xhr.status === 404) {
+	      if (xhr.status < 300) resolve(JSON.parse(xhr.response));else {
 	        var err = new Error('Error: Received Status Code ' + xhr.status);
 
 	        reject(err);
@@ -425,7 +441,7 @@
 	});
 	/* global XMLHttpRequest */
 
-	// retrieve user's geolocalation data
+	// retrieve user's geolocation data
 	function getUserInfo(adObj) {
 	  return new Promise(function (resolve, reject) {
 	    var xhr = new XMLHttpRequest();
@@ -492,7 +508,7 @@
 	  return new Promise(function (resolve, reject) {
 	    var xhr = new XMLHttpRequest();
 
-	    xhr.open('POST', '/database');
+	    xhr.open('POST', 'http://localhost:5000/database');
 	    xhr.setRequestHeader('Content-Type', 'application/json');
 	    xhr.onload = function () {
 	      return resolve(xhr.status);
